@@ -1,0 +1,29 @@
+name: Deploy to Google
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./functions
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: install libraries
+        run: npm install
+        working-directory: ${{env.working-directory}}
+      - name: install firebase
+        run: npm i firebase-tools -g
+      - name: deploy
+        run: firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }}
