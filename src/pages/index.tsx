@@ -1,23 +1,7 @@
-import { InferGetServerSidePropsType } from "next";
-import Head from "next/head";
-import Header from "~/components/Header";
-import ListItem from "~/components/ListItem";
-import { findDocuments } from "~/lib/firestore";
-import { Subreddit } from "~/types";
+import Head from 'next/head'
+import Header from '~/components/Header'
 
-export const getServerSideProps = async () => {
-  const subreddits = await findDocuments<Subreddit>("subreddits");
-
-  return {
-    props: {
-      subreddits: subreddits.sort((a, b) => b.subscribers - a.subscribers),
-    },
-  };
-};
-
-const Home = ({
-  subreddits,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Home = () => {
   return (
     <>
       <Head>
@@ -40,13 +24,13 @@ const Home = ({
         </div>
 
         <ul>
-          {subreddits.map((subreddit) => (
+          {/* {subreddits.map((subreddit) => (
             <ListItem subreddit={subreddit} />
-          ))}
+          ))} */}
         </ul>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

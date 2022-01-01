@@ -8,13 +8,11 @@
     "worker": "dotenv node dist/worker.js"
   },
   "dependencies": {
-    "algoliasearch": "^4.11.0",
     "axios": "^0.24.0",
     "firebase-admin": "^10.0.1",
     "next": "latest",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "urlencode": "^1.1.0"
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@types/react": "^17.0.38",

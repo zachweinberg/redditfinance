@@ -1,8 +1,8 @@
-import { Subreddit } from "~/types";
-import { approxNumber } from "~/utils";
+import { Subreddit } from 'types'
+import { approxNumber } from '~/utils'
 
 interface Props {
-  subreddit: Subreddit;
+  subreddit: Subreddit
 }
 
 const ListItem: React.FunctionComponent<Props> = ({ subreddit }: Props) => {
@@ -48,7 +48,7 @@ const ListItem: React.FunctionComponent<Props> = ({ subreddit }: Props) => {
         </div>
       </a>
     </li>
-  );
-};
+  )
+}
 
-export default ListItem;
+export default ListItem

@@ -2,6 +2,7 @@ import algoliasearch from 'algoliasearch'
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import { decode } from 'html-entities'
+import { Subreddit } from '../../types'
 import { getSubredditInfo } from './reddit'
 import subreddits from './subreddits'
 
@@ -31,22 +32,21 @@ export const scrapeSubreddits = functions
 
         console.log(` -- SAVING ${sub.name} to firestore --`)
 
+        const data: Partial<Subreddit> = {
+          name,
+          url,
+          subscribers,
+          foundedAt,
+          logo,
+          updatedAt: Date.now(),
+          tags: sub.tags ?? [],
+        }
+
         await admin
           .firestore()
           .collection('subreddits')
           .doc(sub.name)
-          .set(
-            {
-              name,
-              url,
-              subscribers,
-              foundedAt,
-              logo,
-              updatedAt: Date.now(),
-              tags: sub.tags ?? [],
-            },
-            { merge: true }
-          )
+          .set(data, { merge: true })
       } catch (e) {
         console.error(e)
       }
