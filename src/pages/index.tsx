@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { Subreddit, Tag } from 'types'
 import FilterSelect from '~/components/FilterSelect'
-import Header from '~/components/Header'
+import Layout from '~/components/Layout'
 import ListItem from '~/components/ListItem'
 
 const Home = () => {
@@ -31,36 +31,32 @@ const Home = () => {
   }, [tags])
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Reddit Finance - The database of finance and investing subreddits.</title>
       </Head>
 
-      <Header />
+      <div className="px-5">
+        <h1 className="mt-8 text-[40px] font-semibold text-dark text-center">
+          Finance Subreddits
+        </h1>
 
-      <main className="max-w-4xl mx-auto">
-        <div className="px-5">
-          <h1 className="mt-8 text-[40px] font-semibold text-dark text-center">
-            Finance Subreddits
-          </h1>
+        <p className="my-8 text-base font-medium text-center text-gray-500">
+          The redditors guide to finance and investing subreddits.
+        </p>
+      </div>
 
-          <p className="my-8 text-base font-medium text-center text-gray-500">
-            The redditors guide to finance and investing subreddits.
-          </p>
-        </div>
+      <div className="max-w-xs mx-auto mb-8">
+        <FilterSelect selectedTags={tags} setTags={setTags} />
+      </div>
 
-        <div className="max-w-xs mx-auto mb-8">
-          <FilterSelect selectedTags={tags} setTags={setTags} />
-        </div>
-
-        <ul>
-          {!loading &&
-            subreddits.map((subreddit) => (
-              <ListItem key={subreddit.name} subreddit={subreddit} />
-            ))}
-        </ul>
-      </main>
-    </>
+      <ul>
+        {!loading &&
+          subreddits.map((subreddit) => (
+            <ListItem key={subreddit.name} subreddit={subreddit} />
+          ))}
+      </ul>
+    </Layout>
   )
 }
 

@@ -32,7 +32,7 @@ const ListItem: React.FunctionComponent<Props> = ({ subreddit }: Props) => {
               <p className="mb-1 text-sm font-semibold md:text-base text-dark">
                 {subreddit.name}
               </p>
-              {subreddit.title && (
+              {subreddit && (
                 <p className="text-xs font-medium text-gray-600">{subreddit.title}</p>
               )}
             </div>
