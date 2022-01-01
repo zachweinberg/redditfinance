@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const subreddits: Subreddit[] = []
 
-  const docs = await docRef.get()
+  const docs = await docRef.orderBy('subscribers', 'desc').get()
 
   docs.forEach((doc) => subreddits.push(doc.data() as Subreddit))
 

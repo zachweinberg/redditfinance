@@ -1,10 +1,8 @@
-import algoliasearch from 'algoliasearch'
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import { decode } from 'html-entities'
-import { Subreddit } from '../../types'
+import { Subreddit, subredditList } from '../../types'
 import { getSubredditInfo } from './reddit'
-import subreddits from './subreddits'
 
 admin.initializeApp()
 
@@ -15,7 +13,7 @@ export const scrapeSubreddits = functions
   .onRun(async (context) => {
     console.log('-- STARTING REDDIT SCRAPE -- ')
 
-    for (const sub of subreddits) {
+    for (const sub of subredditList) {
       try {
         const info = await getSubredditInfo(sub.name)
 
@@ -23,6 +21,9 @@ export const scrapeSubreddits = functions
         const url = info.data.url
         const subscribers = info.data.subscribers
         const foundedAt = info.data.created * 1000
+
+        const title = info.data.title ?? null
+        const description = info.data.public_description ?? info.data.description ?? null
 
         const logo = info.data.community_icon
           ? decode(info.data.community_icon)
@@ -37,6 +38,8 @@ export const scrapeSubreddits = functions
           url,
           subscribers,
           foundedAt,
+          title,
+          redditDescription: description,
           logo,
           updatedAt: Date.now(),
           tags: sub.tags ?? [],
@@ -53,32 +56,4 @@ export const scrapeSubreddits = functions
     }
 
     return true
-  })
-
-export const onSubredditWrite = functions.firestore
-  .document('subreddits/{subredditName}')
-  .onWrite(async (change, context) => {
-    const { app_id, admin_key } = functions.config().algolia
-
-    const algoliaClient = algoliasearch(app_id, admin_key)
-
-    const index = algoliaClient.initIndex('subreddits')
-
-    if (!change.after.exists) {
-      return index.deleteObject(context.params.subredditName)
-    }
-
-    const newData = change.after.data()
-
-    if (!newData) {
-      return
-    }
-
-    const dataToIndex = {
-      objectID: context.params.subredditName,
-      _tags: newData.tags,
-      ...newData,
-    }
-
-    return index.saveObject(dataToIndex)
   })
