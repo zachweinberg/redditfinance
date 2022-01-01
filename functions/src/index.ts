@@ -1,3 +1,4 @@
+import algoliasearch from 'algoliasearch'
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import { decode } from 'html-entities'
@@ -8,9 +9,11 @@ admin.initializeApp()
 
 export const scrapeSubreddits = functions
   .runWith({ timeoutSeconds: 240, memory: '2GB' })
-  .pubsub.schedule('* * * * *')
+  .pubsub.schedule('0 */2 * * *')
   .timeZone('America/New_York')
   .onRun(async (context) => {
+    console.log('-- STARTING REDDIT SCRAPE -- ')
+
     for (const sub of subreddits) {
       const info = await getSubredditInfo(sub.name)
 
@@ -25,6 +28,8 @@ export const scrapeSubreddits = functions
         ? decode(info.data.icon_img)
         : null
 
+      console.log(` -- SAVING ${sub.name} to firestore --`)
+
       await admin.firestore().collection('subreddits').doc(sub.name).set(
         {
           name,
@@ -32,10 +37,40 @@ export const scrapeSubreddits = functions
           subscribers,
           foundedAt,
           logo,
+          updatedAt: Date.now(),
+          tags: sub.tags,
         },
         { merge: true }
       )
     }
 
     return true
+  })
+
+export const onSubredditWrite = functions.firestore
+  .document('subreddits/{subredditName}')
+  .onWrite(async (change, context) => {
+    const { app_id, admin_key } = functions.config().algolia
+
+    const algoliaClient = algoliasearch(app_id, admin_key)
+
+    const index = algoliaClient.initIndex('subreddits')
+
+    if (!change.after.exists) {
+      return index.deleteObject(context.params.subredditName)
+    }
+
+    const newData = change.after.data()
+
+    if (!newData) {
+      return
+    }
+
+    const dataToIndex = {
+      objectID: context.params.subredditName,
+      _tags: newData.tags,
+      ...newData,
+    }
+
+    return index.saveObject(dataToIndex)
   })
