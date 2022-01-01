@@ -58,6 +58,9 @@ const FilterSelect: React.FunctionComponent<Props> = ({
         setTags(clone)
       }
     } else {
+      if (selectedTags.length === 10) {
+        return
+      }
       setTags([...selectedTags, tag])
     }
   }

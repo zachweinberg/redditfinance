@@ -9,7 +9,7 @@ const Header: React.FunctionComponent = () => {
 
         <div>
           <a className="p-2 text-base font-semibold transition-colors duration-100 rounded-md cursor-pointer hover:bg-gray-100">
-            + Submit Subreddit
+            + Add Subreddit
           </a>
         </div>
       </div>

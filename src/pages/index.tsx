@@ -21,6 +21,7 @@ const Home = () => {
     }
 
     const response = await axios.get(url)
+
     setSubreddits(response.data)
     setLoading(false)
   }
