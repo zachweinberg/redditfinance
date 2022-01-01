@@ -6,6 +6,8 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <link rel="preconnect" href="https://cdn.usefathom.com" crossOrigin="" />
+
           <meta charSet="utf-8" />
 
           <meta
