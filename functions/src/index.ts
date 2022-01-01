@@ -4,6 +4,8 @@ import { decode } from 'html-entities'
 import { getSubredditInfo } from './reddit'
 import subreddits from './subreddits'
 
+admin.initializeApp()
+
 export const scrapeSubreddits = functions
   .runWith({ timeoutSeconds: 240, memory: '2GB' })
   .pubsub.schedule('* * * * *')
