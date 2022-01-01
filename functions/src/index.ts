@@ -15,33 +15,41 @@ export const scrapeSubreddits = functions
     console.log('-- STARTING REDDIT SCRAPE -- ')
 
     for (const sub of subreddits) {
-      const info = await getSubredditInfo(sub.name)
+      try {
+        const info = await getSubredditInfo(sub.name)
 
-      const name = info.data.display_name
-      const url = info.data.url
-      const subscribers = info.data.subscribers
-      const foundedAt = info.data.created * 1000
+        const name = decode(info.data.display_name)
+        const url = info.data.url
+        const subscribers = info.data.subscribers
+        const foundedAt = info.data.created * 1000
 
-      const logo = info.data.community_icon
-        ? decode(info.data.community_icon)
-        : info.data.icon_img
-        ? decode(info.data.icon_img)
-        : null
+        const logo = info.data.community_icon
+          ? decode(info.data.community_icon)
+          : info.data.icon_img
+          ? decode(info.data.icon_img)
+          : null
 
-      console.log(` -- SAVING ${sub.name} to firestore --`)
+        console.log(` -- SAVING ${sub.name} to firestore --`)
 
-      await admin.firestore().collection('subreddits').doc(sub.name).set(
-        {
-          name,
-          url,
-          subscribers,
-          foundedAt,
-          logo,
-          updatedAt: Date.now(),
-          tags: sub.tags,
-        },
-        { merge: true }
-      )
+        await admin
+          .firestore()
+          .collection('subreddits')
+          .doc(sub.name)
+          .set(
+            {
+              name,
+              url,
+              subscribers,
+              foundedAt,
+              logo,
+              updatedAt: Date.now(),
+              tags: sub.tags ?? [],
+            },
+            { merge: true }
+          )
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     return true
