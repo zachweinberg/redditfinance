@@ -63,6 +63,8 @@ const FilterSelect: React.FunctionComponent<Props> = ({
       }
       setTags([...selectedTags, tag])
     }
+
+    setOpen(false)
   }
 
   return (
