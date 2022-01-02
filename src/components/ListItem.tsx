@@ -53,6 +53,10 @@ const ListItem: React.FunctionComponent<Props> = ({ subreddit }: Props) => {
             <p className="text-xs font-medium text-gray-600">subscribers</p>
           </div>
         </div>
+
+        <div className="px-6 mb-6 leading-5 text-gray-500">
+          {subreddit.redditDescription}
+        </div>
       </a>
     </li>
   )

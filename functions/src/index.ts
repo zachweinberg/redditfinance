@@ -38,8 +38,9 @@ const startScrape = async () => {
       const subscribers = info.data.subscribers
       const foundedAt = info.data.created * 1000
 
-      const title = info.data.title ?? null
-      const description = info.data.public_description ?? info.data.description ?? null
+      const title = info.data.title ? decode(info.data.title) : null
+      const description =
+        info.data.public_description ?? decode(info.data.description) ?? null
 
       const logo = info.data.community_icon
         ? decode(info.data.community_icon)
