@@ -6,7 +6,7 @@ const Header: React.FunctionComponent = () => {
       <div className="flex items-center justify-between max-w-4xl mx-auto">
         <Link href="/">
           <a className="flex items-center hover:opacity-80">
-            <img src="/img/logo.png" className="w-6 mr-2 md:w-12" />
+            <img src="/img/logo.png" className="w-6 mr-2 md:w-10" />
             <p className="font-bold md:text-2xl text-dark">Reddit Finance</p>
           </a>
         </Link>

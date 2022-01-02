@@ -109,4 +109,5 @@ export const subredditList: Array<{
   { name: 'financialindependence', tags: ['Personal finance'] },
   { name: 'economics', tags: ['Economy'] },
   { name: 'realestateinvesting', tags: ['Real estate', 'Investing'] },
+  { name: 'chainlink', tags: ['Crypto'] },
 ]
