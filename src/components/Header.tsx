@@ -13,8 +13,8 @@ const Header: React.FunctionComponent = () => {
 
         <div>
           <Link href="/add">
-            <a className="p-2 text-sm font-semibold transition-colors duration-100 rounded-md cursor-pointer md:text-base hover:bg-gray-100">
-              + Add subreddit
+            <a className="p-3 text-sm font-semibold transition-colors duration-100 bg-gray-100 rounded-md cursor-pointer md:text-base hover:bg-slate-200">
+              + Add a subreddit
             </a>
           </Link>
         </div>

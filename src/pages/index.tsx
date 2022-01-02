@@ -1,34 +1,49 @@
-import axios from 'axios'
+import { trackGoal } from 'fathom-client'
+import { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { Subreddit, Tag } from 'types'
 import FilterSelect from '~/components/FilterSelect'
 import Layout from '~/components/Layout'
 import ListItem from '~/components/ListItem'
+import firestore from '~/lib/firestore'
 
-const Home = () => {
-  const [subreddits, setSubreddits] = useState<Subreddit[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-  const [tags, setTags] = useState<Tag[]>([])
+interface Props {
+  subreddits: Subreddit[]
+}
 
-  const fetchSubreddits = async () => {
-    setLoading(true)
+export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
+  let docRef = firestore.collection('subreddits')
 
-    let url = `/api/subreddits`
+  const subreddits: Subreddit[] = []
 
-    if (tags.length > 0) {
-      url += `?tags=${tags.join(',')}`
-    }
+  const docs = await docRef.orderBy('subscribers', 'desc').get()
 
-    const response = await axios.get(url)
+  docs.forEach((doc) => subreddits.push(doc.data() as Subreddit))
 
-    setSubreddits(response.data)
-    setLoading(false)
+  return {
+    props: { subreddits },
   }
+}
+
+const Home: NextPage<Props> = ({ subreddits }) => {
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([])
+  const [displayedSubs, setDisplayedSubs] = useState<Subreddit[]>(subreddits)
 
   useEffect(() => {
-    fetchSubreddits()
-  }, [tags])
+    trackGoal('NFHJJ8EV', 0)
+
+    if (selectedTags.length === 0) {
+      setDisplayedSubs(subreddits)
+      return
+    }
+
+    const foundSubs = subreddits
+      .filter((sub) => sub.tags.some((tag) => selectedTags.some((t) => tag === t)))
+      .sort((a, b) => b.subscribers - a.subscribers)
+
+    setDisplayedSubs(foundSubs)
+  }, [selectedTags])
 
   return (
     <Layout>
@@ -41,20 +56,19 @@ const Home = () => {
           Finance Subreddits
         </h1>
 
-        <p className="my-8 text-base font-medium text-center text-gray-500">
-          The redditors guide to finance and investing subreddits.
+        <p className="my-4 text-base font-medium text-center text-gray-500">
+          The database of finance and investing subreddits.
         </p>
       </div>
 
       <div className="max-w-xs mx-auto mb-8">
-        <FilterSelect selectedTags={tags} setTags={setTags} />
+        <FilterSelect selectedTags={selectedTags} setTags={setSelectedTags} />
       </div>
 
       <ul>
-        {!loading &&
-          subreddits.map((subreddit) => (
-            <ListItem key={subreddit.name} subreddit={subreddit} />
-          ))}
+        {displayedSubs.map((subreddit) => (
+          <ListItem key={subreddit.name} subreddit={subreddit} />
+        ))}
       </ul>
     </Layout>
   )

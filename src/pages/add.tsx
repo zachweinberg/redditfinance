@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { trackGoal } from 'fathom-client'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
@@ -12,6 +13,7 @@ const Add: NextPage = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault()
+    trackGoal('LALLM9GO', 0)
     await axios.post('/api/add', { name, url, description })
     setSuccess(true)
     setName('')

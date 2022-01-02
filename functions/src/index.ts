@@ -1,3 +1,4 @@
+import axios from 'axios'
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import { decode } from 'html-entities'
@@ -8,7 +9,7 @@ admin.initializeApp()
 
 export const scrapeSubreddits = functions
   .runWith({ timeoutSeconds: 240, memory: '2GB' })
-  .pubsub.schedule('0 */2 * * *')
+  .pubsub.schedule('0 */3 * * *')
   .timeZone('America/New_York')
   .onRun(async (context) => {
     console.log('-- STARTING REDDIT SCRAPE -- ')
@@ -54,6 +55,10 @@ export const scrapeSubreddits = functions
         console.error(e)
       }
     }
+
+    const deployHookURL = functions.config().vercel.deploy_hook
+
+    await axios.post(deployHookURL)
 
     return true
   })
