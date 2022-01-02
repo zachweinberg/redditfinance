@@ -2,7 +2,7 @@ export interface Subreddit {
   name: string
   subscribers: number
   updatedAt: number
-  redditDescription: string
+  redditDescription: string | null
   ourDescription: string
   title: string | null
   foundedAt: number
