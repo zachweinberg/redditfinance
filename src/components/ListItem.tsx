@@ -55,8 +55,10 @@ const ListItem: React.FunctionComponent<Props> = ({ subreddit }: Props) => {
         </div>
 
         {subreddit.redditDescription && (
-          <div className="px-6 mb-6 leading-5 text-gray-500">
-            {subreddit.redditDescription}
+          <div className="px-6 mb-6 leading-6 text-gray-500 max-h-28">
+            {subreddit.redditDescription.length > 320
+              ? subreddit.redditDescription.slice(0, 320) + '...'
+              : subreddit.redditDescription}
           </div>
         )}
       </a>
