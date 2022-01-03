@@ -110,4 +110,5 @@ export const subredditList: Array<{
   { name: 'economics', tags: ['Economy'] },
   { name: 'realestateinvesting', tags: ['Real estate', 'Investing'] },
   { name: 'chainlink', tags: ['Crypto'] },
+  { name: 'portfolios', tags: ['Stocks', 'Trading', 'Investing'] },
 ]
