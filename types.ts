@@ -110,5 +110,8 @@ export const subredditList: Array<{
   { name: 'economics', tags: ['Economy'] },
   { name: 'realestateinvesting', tags: ['Real estate', 'Investing'] },
   { name: 'chainlink', tags: ['Crypto'] },
-  { name: 'portfolios', tags: ['Stocks', 'Trading', 'Investing'] },
+  { name: 'portfolios', tags: ['Stocks', 'Trading', 'Investing', 'Retirement'] },
+  { name: 'burryology', tags: ['Stocks', 'Trading', 'Investing', 'Advanced'] },
+  { name: 'futurestrading', tags: ['Trading', 'High risk'] },
+  { name: 'coastfire', tags: ['Retirement'] },
 ]
