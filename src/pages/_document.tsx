@@ -39,8 +39,6 @@ export default class MyDocument extends Document {
           <meta property="twitter:url" content="https://redditfinance.com" />
 
           <meta name="theme-color" content="#fff" />
-
-          <link rel="canonical" href="https://redditfinance.com/" />
         </Head>
         <body className="antialiased font-poppins">
           <Main />
