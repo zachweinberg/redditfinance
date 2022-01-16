@@ -1,6 +1,6 @@
 const Footer: React.FunctionComponent = () => {
   return (
-    <footer className="flex items-center justify-center mt-16">
+    <footer className="flex items-center justify-center py-10 mt-16">
       <a
         href="https://github.com/zachweinberg/redditfinance"
         target="_blank"
