@@ -32,6 +32,7 @@ export const tags = [
   'Economy',
   'High net worth',
   'Personal finance',
+  'Canada',
 ] as const
 
 export type Tag = typeof tags[number]
@@ -114,4 +115,5 @@ export const subredditList: Array<{
   { name: 'burryology', tags: ['Stocks', 'Trading', 'Investing', 'Advanced'] },
   { name: 'futurestrading', tags: ['Trading', 'High risk'] },
   { name: 'coastfire', tags: ['Retirement'] },
+  { name: 'personalfinancecanada', tags: ['Canada', 'Personal finance'] },
 ]
