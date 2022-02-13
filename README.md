@@ -17,7 +17,7 @@ As of today, the list of subreddits has to manually be maintained in `types.ts`.
 - `src/*` - The Next.js website
 - `functions/*` - This folder is excluded from the Next.js build and contains the Firebase function that scrapes Reddit every 3 hours.
   We just update the subscriber count for each sub in this cronjob and then re-deploy the Vercel website.
-  The reason we re-deploy the website is because we are not using SSR and instead build a static website at buildtime (SSG).
+  The reason we re-deploy the website is because we are not using SSR and instead build a static website at buildtime (SSG). In the future, [ISR](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration) will be implemented!
 
 ## Running the website locally
 
